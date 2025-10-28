@@ -10,7 +10,7 @@ $info: #a5d6f2;
 @import "../../node_modules/bootstrap/scss/bootstrap";
 
 html, body { height: 100%; }
-body { background: linear-gradient(0deg, rgba(163,210,237,0.7036064425770308) 0%, rgba(101,157,189,0.829656862745098) 100%) no-repeat; }
+body { background-color: rgba(163,210,237,0.7036064425770308); }
 .my-modal-container { position: relative; }
 .my-modal-list { position: absolute; z-index: 1; }
 .my-mod-lis-elem { display: flex; align-items: baseline; gap: 10px; }

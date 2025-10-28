@@ -1,7 +1,7 @@
 import ReactDOM from 'react-dom';
-import AjaxQuery from "../services/AjaxOuery";
+import AjaxQuery from "../../services/AjaxOuery";
 import { useEffect, useState } from 'react';
-import FormatDate from "../services/FormatDate";
+import FormatDate from "../../services/FormatDate";
 
 
 const Modal = ({ show, onCloseButtonClick, occasion_id }) => {
@@ -34,7 +34,7 @@ const Modal = ({ show, onCloseButtonClick, occasion_id }) => {
 
                     document.body.appendChild(ym_script);
                 } else {
-                    window.ymaps.ready(resolve);
+                    resolve();
                 }
             });
         }

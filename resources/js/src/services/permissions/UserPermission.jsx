@@ -1,0 +1,6 @@
+class UserPolicy {
+
+    viewAny(user) {
+        
+    }
+}

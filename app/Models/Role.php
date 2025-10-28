@@ -13,4 +13,11 @@ class Role extends Model
         'name',
         'permissions'
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'permissions' => 'json'
+        ];
+    }
 }

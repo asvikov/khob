@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import AjaxQuery from '../services/AjaxOuery';
+import AjaxQuery from '../../services/AjaxOuery';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
@@ -26,12 +26,24 @@ const Login = () => {
     }
 
     const handleResponse = (responce) => {
-        if((responce.status === 200) && !!responce.data) {
-            let json_user = JSON.stringify(responce.data.user);
-            localStorage.setItem('user', json_user);
+        let result = false;
 
-            return navigate('/users');
-        } else {
+        
+
+        if((responce.status === 200)) {
+
+            if(responce.data?.user && responce.data?.user !== null && typeof(responce.data?.user) === 'object') {
+
+                if(responce.data.user.name.length) {
+                    let json_user = JSON.stringify(responce.data.user);
+                    localStorage.setItem('user', json_user);
+                    result = true;
+                    return navigate('/users');
+                }
+            }
+        }
+
+        if(!result) {
             setErrorMessage('email или пароль неверный');
             setRquestData(false);
         }

@@ -18,7 +18,7 @@ class RoleFactory extends Factory
     {
         return [
             'name' => 'profile_owner',
-            'permissions' => '{"Profile":{"viewAny":["permitEntity"],"view":["permitViewFromSettings"],"delete":false}}'
+            'permissions' => ["Profile" => ["viewAny" => ["permitEntity"], "view" => ["owner"], "update" => ["owner"]]]
         ];
     }
 }

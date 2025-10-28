@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import React from 'react';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
-import AjaxQuery from '../services/AjaxOuery';
-import AuthService from "../services/AuthService";
+import AjaxQuery from '../../services/AjaxOuery';
+import AuthService from "../../services/AuthService";
 
 const Dashboard = () => {
     const Auth = new AuthService();

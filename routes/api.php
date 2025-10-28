@@ -14,9 +14,9 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 */
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::resource('/users', UserController::class);
+    Route::resource('/users', UserController::class)->except(['edit', 'create']);
     Route::post('/logout', [AuthController::class, 'logout']);
-    Route::resource('/occasions', OccasionController::class)->except(['create']);
+    Route::resource('/occasions', OccasionController::class)->except(['edit', 'create']);
 });
 
 Route::get('/welcom',  [OccasionController::class, 'indexGuest']);

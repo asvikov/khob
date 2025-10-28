@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class OccasionCreateRequest extends FormRequest
+class UserUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,15 +23,16 @@ class OccasionCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'start' => [
-                'required',
-                'date',
-                'after_or_equal:'.now()->subMinutes(30)->toDateTimeString()
+            'name' => 'string|min:4',
+            'last_name' => 'string|min:4',
+            'email' => [
+                'email',
+                Rule::unique('users')->ignore($this->id)
             ],
-            'end' => 'date',
-            'location.*' => 'required|numeric',
-            'address' => 'required|string',
-            'description' =>'required|string|min:5'
+            'password' => 'string|min:3',
+            'description' => 'string',
+            'birth' => 'date',
+            'banned' => 'integer|size:1'
         ];
     }
 }

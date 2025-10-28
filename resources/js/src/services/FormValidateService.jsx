@@ -35,7 +35,7 @@ class FormValidateService {
                 return (field.length > 0);
             } else if(typeof(field) === 'number' || typeof(field) === 'boolean') {
                 return true;
-            } else if(typeof(field) === 'object') {
+            } else if(typeof(field) === 'object' && field !== null) {
                 return (Object.keys(field).length > 0);
             } else {
                 return false;

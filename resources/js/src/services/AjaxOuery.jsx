@@ -2,7 +2,22 @@ const AjaxQuery = async function fetchData(url, set_data_fn, method_query = 'GET
 
     console.log('ajax go');
 
-    let user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : {};
+    const getUserFromStorage = () => {
+        let st_user = localStorage.getItem('user');
+
+        if(st_user !== null && st_user.length) {
+
+            try {
+                return JSON.parse(st_user);
+            } catch (error) {
+                console.error('user in localStorage is not valid JSON');
+            }
+        } else {
+            return {};
+        }
+    }
+
+    const user = getUserFromStorage();
 
     let req_options = {
         headers: {
@@ -39,10 +54,18 @@ const AjaxQuery = async function fetchData(url, set_data_fn, method_query = 'GET
             set_data_fn({'status':401});
         }
 
+        if(response.status === 403) {
+            set_data_fn({'status':403});
+        }
+
         if(response.ok || response.status === 422) {
             let result = {};
             result.data = await response.json();
             result.status = response.status;
+            
+            if(result.data.errors) {
+                console.error(result.data.errors);
+            }
             set_data_fn(result);
         }
     } catch (error) {

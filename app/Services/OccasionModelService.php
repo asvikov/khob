@@ -53,6 +53,24 @@ class OccasionModelService {
         return DB::table('occasions')->find($id);
     }
 
+    public function update(array $input) {
+
+        $id = $input['id'];
+        $fillable = array_flip($this->fillable);
+        $input = array_intersect_key($input, $fillable);
+
+        if(!empty($input['location'])) {
+            $input['location'] = DB::raw("ST_GeogFromText('POINT(".$input['location'][0]." ".$input['location'][1].")')");
+        }
+        $t_now = Carbon::now();
+        $input['updated_at'] = $t_now;
+
+        $is_upd = DB::table('occasions')->where('id', $id)->update($input);
+
+        if(!$is_upd) return [];
+        return DB::table('occasions')->find($id);
+    }
+
     public function pointAsArray(string|null $point) {
 
         if (is_null($point)) return null;

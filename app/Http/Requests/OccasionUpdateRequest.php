@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class OccasionCreateRequest extends FormRequest
+class OccasionUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,14 +23,13 @@ class OccasionCreateRequest extends FormRequest
     {
         return [
             'start' => [
-                'required',
                 'date',
                 'after_or_equal:'.now()->subMinutes(30)->toDateTimeString()
             ],
             'end' => 'date',
-            'location.*' => 'required|numeric',
-            'address' => 'required|string',
-            'description' =>'required|string|min:5'
+            'location.*' => 'numeric',
+            'address' => 'string',
+            'description' =>'string|min:5'
         ];
     }
 }

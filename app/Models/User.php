@@ -10,6 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Role;
 use App\Models\Occasion;
+use App\Models\Profile;
 
 class User extends Authenticatable
 {
@@ -27,7 +28,8 @@ class User extends Authenticatable
         'password',
         'last_name',
         'avatar',
-        'parent_user_id'
+        'parent_user_id',
+        'banned'
     ];
 
     /**
@@ -61,5 +63,10 @@ class User extends Authenticatable
     public function occasions()
     {
         return $this->belongsToMany(Occasion::class);
+    }
+
+    public function profile()
+    {
+        return $this->hasOne(Profile::class);
     }
 }

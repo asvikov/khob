@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\OccasionCreateRequest;
+use App\Http\Requests\OccasionUpdateRequest;
 use App\Services\OccasionModelService;
 
 class OccasionController extends Controller
@@ -49,19 +50,15 @@ class OccasionController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Occasion $occasion)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Occasion $occasion)
+    public function update(OccasionUpdateRequest $request, $id, OccasionModelService $occasionModel)
     {
-        //
+        $input = $request->all();
+        $input['id'] = $id;
+        $occasion = $occasionModel->update($input);
+        
+        return response()->json($occasion);
     }
 
     /**
@@ -69,6 +66,7 @@ class OccasionController extends Controller
      */
     public function destroy(Occasion $occasion)
     {
-        //
+        $occasion->delete();
+        return response()->json($occasion);
     }
 }

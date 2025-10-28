@@ -1,8 +1,8 @@
 import React from "react";
-import AuthService from "../services/AuthService";
+import AuthService from "../../services/AuthService";
 import { Navigate, useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/Button";
-import AjaxQuery from '../services/AjaxOuery';
+import AjaxQuery from '../../services/AjaxOuery';
 
 const User = () => {
     const Auth = new AuthService();
