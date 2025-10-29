@@ -86,7 +86,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'admin_manager',
             'permissions' => [
                 "Profile" => ["viewAny" => ["permitEntity"], "view" => ["permitEntity"], "create" => ["permitEntity"], "update" => ["permitEntity"]],
-                "User" => ["viewAny" => ["permitEntity"], "view" => ["permitEntity"], "create" => ["permitEntity"], "update" => ["permitEntity"]]
+                "User" => ["viewAny" => ["permitEntity"], "view" => ["permitEntity"], "create" => ["permitEntity"], "update" => ["permitEntity"], "delete" => ["permitEntity"]]
             ]
         ]);
 

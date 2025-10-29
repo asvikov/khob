@@ -27,7 +27,7 @@ class UserUpdateRequest extends FormRequest
             'last_name' => 'string|min:4',
             'email' => [
                 'email',
-                Rule::unique('users')->ignore($this->id)
+                Rule::unique('users')->ignore($this->user)
             ],
             'password' => 'string|min:3',
             'description' => 'string',
