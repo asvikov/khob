@@ -5,11 +5,10 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Navigation from './navigation/Navigation';
-import AuthService from '../../services/AuthService';
+import authService from '../../services/authService';
 
 const MainAdmin = () => {
-    const Auth = new AuthService();
-    const check_user = Auth.check();
+    const check_user = authService.check();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -18,7 +17,7 @@ const MainAdmin = () => {
         }
     }, [check_user]);
     
-    if(!Auth.canViewAdmin()) {
+    if(!authService.canViewAdmin()) {
         return <Navigate to='/login' />;
     }
 

@@ -4,15 +4,17 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import AjaxQuery from '../../services/AjaxOuery';
-import { useNavigate } from 'react-router-dom';
+import { useLogin } from '../../hooks/useAuth';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [request_data, setRquestData] = useState(false);
     const [error_message, setErrorMessage] = useState('');
-    const navigate = useNavigate();
+    const { mutate: login, isPending } = useLogin({
+        onError: (error) => {
+            setErrorMessage(error.message);
+        }
+    });
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -22,31 +24,7 @@ const Login = () => {
             'password':password,
         };
 
-        AjaxQuery('/api/login', handleResponse, 'POST', request_body);
-    }
-
-    const handleResponse = (responce) => {
-        let result = false;
-
-        
-
-        if((responce.status === 200)) {
-
-            if(responce.data?.user && responce.data?.user !== null && typeof(responce.data?.user) === 'object') {
-
-                if(responce.data.user.name.length) {
-                    let json_user = JSON.stringify(responce.data.user);
-                    localStorage.setItem('user', json_user);
-                    result = true;
-                    return navigate('/users');
-                }
-            }
-        }
-
-        if(!result) {
-            setErrorMessage('email или пароль неверный');
-            setRquestData(false);
-        }
+        login(request_body);
     }
 
     const handleEmailChange = (event) => {

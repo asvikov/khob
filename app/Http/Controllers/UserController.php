@@ -32,7 +32,7 @@ class UserController extends Controller
     public function forRegisterUsers(ForRegUsRequest $request) {
 
         $pat = '%'.$request->input('name').'%';
-        $users = User::where('name', 'LIKE', $pat)->orWhere('last_name', 'LIKE', $pat)->get(['id', 'name', 'last_name', 'avatar']);
+        $users = User::where('name', 'ILIKE', $pat)->orWhere('last_name', 'LIKE', $pat)->get(['id', 'name', 'last_name', 'avatar']);
         return response()->json($users);
     }
 
@@ -93,7 +93,10 @@ class UserController extends Controller
             return response('Unauthorized', 403);
         }
         $profile = $user->profile;
-        $profile->delete();
+        
+        if($profile) {
+            $profile->delete();
+        }
         $user->delete();
         return response()->json(['message' => 'user id:'.$id.'has been deleted']);
     }

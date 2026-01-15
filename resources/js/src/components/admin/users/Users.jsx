@@ -1,77 +1,64 @@
-import React, { useEffect, useState } from 'react';
-import AjaxQuery from '../../../services/AjaxOuery';
+import React, { useState } from 'react';
 import List from './List';
 import Edit from './Edit';
+import View from './View';
+import { useUsers } from '../../../hooks/useUsers';
 
-const Users = (forceUpdate) => {
-    const [users, setUsers] = useState([]);
-    const [selectedUser, setSelectedUser] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [is_create, setIsCreate] = useState(false);
+const Users = () => {
+    const [editUserId, setEditUserId] = useState(false);
+    const [viewUserId, setViewUserId] = useState(false);
+    const { data, isLoading, error } = useUsers();
 
-    useEffect(() => {
-        loadUsers();
-    }, []);
-
-    const loadUsers = () => {
-        setLoading(true);
-        setError(null);
-        AjaxQuery('/api/users', handleUsersResponse);
+    const handleViewClick = (id) => {
+        setEditUserId(false);
+        setViewUserId(id);
     }
 
-    const handleUsersResponse = (response) => {
-        setLoading(false);
-        if (response.status === 200 && response.data) {
-            setUsers(response.data);
-        } else {
-            setError('Ошибка загрузки списка пользователей');
-        }
-    }
+    const handleEditClick = (id) => {
 
-    const handleUserDataResponse = (response) => {
-        setLoading(false);
-        if (response.status === 200 && response.data) {
-            setSelectedUser(response.data);
+        if(id) {
+            setViewUserId(false);
+            setEditUserId(id);
         } else {
-            setError('Ошибка загрузки данных пользователя');
-        }
-    }
-
-    const handleEditClick = (userId) => {
-        setLoading(true);
-        setError(null);
-
-        if(userId) {
-            AjaxQuery('/api/users/' + userId, handleUserDataResponse);
-        } else {
-            setIsCreate(true);
-            setLoading(false);
-            setSelectedUser({});
+            setViewUserId(false);
+            setEditUserId(true);
         }
     }
 
     const handleCloseUserDetails = () => {
-        setSelectedUser(null);
+        setEditUserId(false);
+        setViewUserId(false);
     }
 
     return (
         <div className="users-container">
-            {selectedUser ? (
-                <Edit 
-                    user={selectedUser}
-                    onClose={handleCloseUserDetails}
-                    loading={loading}
-                    error={error}
-                    is_create={is_create}
-                />
-            ) : (
+            {(!viewUserId && !editUserId) && (
+                <div>
                 <List 
-                    users={users}
-                    onEditClick={handleEditClick}
-                    loading={loading}
+                    users={data}
+                    onEdit={handleEditClick}
+                    onView={handleViewClick}
+                    loading={isLoading}
                     error={error}
                 />
+                </div>
+            )}
+            {editUserId && (
+                <div>
+                <Edit 
+                    userId={editUserId}
+                    onClose={handleCloseUserDetails}
+                />
+                </div>
+            )}
+            {viewUserId && (
+                <div>
+                <View 
+                    userId={viewUserId}
+                    onEdit={handleEditClick}
+                    onClose={handleCloseUserDetails}
+                />
+                </div>
             )}
         </div>
     );

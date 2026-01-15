@@ -10,13 +10,28 @@ import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import Occasion from './components/occasions/Occasion';
 import User from './components/users/User';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const appelem = ReactDOM.createRoot(document.getElementById('app'));
 
 function AppRoutes() {
     const location = useLocation();
+    const queryClient = new QueryClient({
+        defaultOptions: {
+            queries: {
+                staleTime: 5 * 60 * 1000, // 5 minutes
+                cacheTime: 10 * 60 * 1000, // 10 minutes
+                retry: 1,
+                refetchOnWindowFocus: false,
+            },
+            mutations: {
+                retry: 1,
+            }
+        },
+    });
     
     return (
+        <QueryClientProvider client={queryClient}>
         <Routes>
             <Route path="/" element={<Main />}>
                 <Route index element={<Occasion />} />
@@ -31,6 +46,7 @@ function AppRoutes() {
             </Route>
             <Route path="*" element={<div>ресурс не найден</div>} />
         </Routes>
+        </QueryClientProvider>
     );
 }
 

@@ -1,24 +1,18 @@
 import React from "react";
-import AuthService from "../../services/AuthService";
-import { Navigate, useNavigate } from "react-router-dom";
+import authService from "../../services/authService";
+import { Navigate } from "react-router-dom";
 import Button from "react-bootstrap/Button";
-import AjaxQuery from '../../services/AjaxOuery';
+import { useLogout } from "../../hooks/useAuth";
 
 const User = () => {
-    const Auth = new AuthService();
-    const user = Auth.getUser();
-    const navigate = useNavigate();
-
-    const handleRedirect = () => {
-        Auth.logout();
-        navigate('/login');
-    };
+    const user = authService.getUser();
+    const { mutate: logout } = useLogout();
 
     const handleLogout = (event) => {
-        AjaxQuery('/api/logout', handleRedirect, 'POST');
+        logout();
     }
 
-    if(Auth.check) {
+    if(authService.check) {
         return (
             <div>
                 <div>Имя: {user.name}</div>

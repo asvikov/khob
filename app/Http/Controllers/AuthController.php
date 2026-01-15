@@ -45,7 +45,7 @@ class AuthController extends Controller
             $user = Auth::user();
             return $this->loginResponceToken($user);
         } else {
-            return response()->json(['status' => 'failure'], 200);
+            return response()->json('failure', 200);
         }
     }
 
@@ -55,9 +55,9 @@ class AuthController extends Controller
         $roles = $user->roles->select(['name', 'permissions']);
 
         $result = [
-            'status' => 'success',
             'user' => [
                 'bearer_token' => $token,
+                'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
                 'roles' => $roles

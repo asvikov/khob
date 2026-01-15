@@ -32,7 +32,7 @@ class UserUpdateRequest extends FormRequest
             'password' => 'string|min:3',
             'description' => 'string',
             'birth' => 'date',
-            'banned' => 'integer|size:1'
+            'banned' => 'integer|in:0,1'
         ];
     }
 }

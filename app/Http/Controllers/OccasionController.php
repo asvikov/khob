@@ -17,9 +17,9 @@ class OccasionController extends Controller
      */
     public function index(Request $request)
     {
-        if($request->query('location') === 'occasions') {
+        if($request->query('occ') === 'own') {
             $user = $request->user();
-            $occasions = $user->occasions()->get(['id', 'start', 'end', 'description', 'address']);
+            $occasions = $user->occasions()->get(['occasions.id', 'start', 'end', 'description', 'address']);
             return response()->json($occasions);
         } else {
             $occasions = Occasion::all(['id', 'start', 'end', 'description', 'address']);
@@ -27,7 +27,11 @@ class OccasionController extends Controller
         }
     }
 
-    public function indexGuest() {}
+    public function indexGuest() {
+
+        $occasions = Occasion::all(['id', 'start', 'end', 'description', 'address']);
+        return response()->json($occasions);
+    }
 
     /**
      * Store a newly created resource in storage.

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import AjaxQuery from '../../../services/AjaxOuery';
 import FormValidateService from '../../../services/FormValidateService';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
@@ -8,59 +7,65 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import FormatDate from '../../../services/FormatDate';
 import { useNavigate } from 'react-router-dom';
+import { useUser, useCreateUser, useUpdateUser, useDeleteUser } from '../../../hooks/useUsers';
 
-const Edit = ({ user, onClose, loading = false, error = null, is_create = false }) => {
-    if (loading) return <div>Загрузка...</div>;
-    if (error) return <div className="error">{error}</div>;
-    if (!user) return null;
+const Edit = ({ userId, onClose }) => {
 
-    const [is_edit_or_crete, setIsEdit] = useState(is_create);
     const [corr_inputs, setCorrInputs] = useState({});
     const [error_message, setErrorMessage] = useState('');
     const formatDate = new FormatDate();
     const navigate = useNavigate();
+    const is_create = (userId === true);
+    const { data, isLoading, error } = is_create ? {data: {}, isLoading: false, error: false} : useUser(userId);
+    const handleResponseOb = {
+        onError: (error) => {
+            if(error.status === 403) {
+                setErrorMessage('нет прав');
+            }
+
+            if(error.status === 422) {
+                setErrorMessage(error.message);
+            }
+        }
+    }
+    const { mutate: createUser, isPending } = useCreateUser(handleResponseOb);
+    const { mutate: updateUser } = useUpdateUser(handleResponseOb);
+    const { mutate: deleteUser } = useDeleteUser(handleResponseOb);
     
-    // Инициализируем состояния значениями из user
+    
     const [formData, setFormData] = useState({
-        first_name: user.name || '',
-        last_name: user.last_name || '',
-        email: user.email || '',
+        first_name: '',
+        last_name: '',
+        email: '',
         password: '',
         conf_password: '',
-        banned: !!Number(user.banned) || false,
-        description: user.profile?.description || '',
-        birth: user.profile?.birth || '',
+        banned: false,
+        description: '',
+        birth: '',
     });
 
-    // Обновляем formData при изменении user
     useEffect(() => {
-        if (user) {
+        if (!is_create && data) {
             setFormData({
-                first_name: user.name || '',
-                last_name: user.last_name || '',
-                email: user.email || '',
+                first_name: data.name || '',
+                last_name: data.last_name || '',
+                email: data.email || '',
                 password: '',
                 conf_password: '',
-                banned: !!Number(user.banned),
-                description: user.profile?.description || '',
-                birth: user.profile?.birth || '',
+                banned: !!Number(data.banned),
+                description: data.profile?.description || '',
+                birth: data.profile?.birth || '',
             });
         }
-    }, [user]);
+    }, [data]);
 
-    const toggleEdit = () => {
-        setIsEdit(!is_edit_or_crete);
-        // Сбрасываем ошибки при переключении режима
-        setCorrInputs({});
-        setErrorMessage('');
-    }
+    if (isLoading) return <div>Загрузка...</div>;
+    if (error) return <div className="error">{error}</div>;
 
     const handleCancel = () => {
-        if(is_create) {
-            return navigate('/admin/users');
-        } else {
-            toggleEdit();
-        }
+        setCorrInputs({});
+        setErrorMessage('');
+        onClose();
     }
 
     const handleChange = (field, value) => {
@@ -69,7 +74,6 @@ const Edit = ({ user, onClose, loading = false, error = null, is_create = false 
             [field]: value
         }));
 
-        // Сбрасываем ошибку для поля при изменении
         if (corr_inputs[field] === false) {
             setCorrInputs(prev => ({
                 ...prev,
@@ -83,7 +87,7 @@ const Edit = ({ user, onClose, loading = false, error = null, is_create = false 
         
         const valid = new FormValidateService();
         let is_corr = {};
-        let data = {};
+        let req_data = {};
 
         const hasChangedNormalize = (newVal, oldVal) => {
             const normalizedNew = newVal === null || newVal === undefined ? '' : String(newVal);
@@ -91,44 +95,44 @@ const Edit = ({ user, onClose, loading = false, error = null, is_create = false 
             return normalizedNew !== normalizedOld;
         };
 
-        if (formData.first_name !== user.name || is_create) {
+        if (formData.first_name !== data.name || is_create) {
             is_corr.first_name = valid.min(4).check(formData.first_name);
             if (is_corr.first_name) {
-                data.name = formData.first_name;
+                req_data.name = formData.first_name;
             }
         }
 
-        if (formData.last_name !== user.last_name || is_create) {
+        if (formData.last_name !== data.last_name || is_create) {
             is_corr.last_name = valid.min(4).check(formData.last_name);
             if (is_corr.last_name) {
-                data.last_name = formData.last_name;
+                req_data.last_name = formData.last_name;
             }
         }
 
-        if (formData.email !== user.email || is_create) {
+        if (formData.email !== data.email || is_create) {
             is_corr.email = valid.email().check(formData.email);
             if (is_corr.email) {
-                data.email = formData.email;
+                req_data.email = formData.email;
             }
         }
 
         if (formData.password.length > 0 || is_create) {
             is_corr.password = valid.equal(formData.conf_password).min(4).check(formData.password);
             if (is_corr.password) {
-                data.password = formData.password;
+                req_data.password = formData.password;
             }
         }
 
-        if (formData.banned !== !!Number(user.banned)) {
-            data.banned = Number(formData.banned);
+        if (formData.banned !== !!Number(data.banned)) {
+            req_data.banned = Number(formData.banned);
         }
 
-        if (hasChangedNormalize(formData.description, user.profile?.description)) {
-            data.description = formData.description;
+        if (hasChangedNormalize(formData.description, data.profile?.description)) {
+            req_data.description = formData.description;
         }
 
-        if (hasChangedNormalize(formData.birth, user.profile?.birth)) {
-            data.birth = formData.birth;
+        if (hasChangedNormalize(formData.birth, data.profile?.birth)) {
+            req_data.birth = formData.birth;
         }
 
         if (!valid.lastChecks()) {
@@ -136,12 +140,11 @@ const Edit = ({ user, onClose, loading = false, error = null, is_create = false 
             setErrorMessage('Исправьте поля выделенные красным');
             valid.resetLastChecks();
         } else {
-            if (Object.keys(data).length > 0) {
+            if (Object.keys(req_data).length > 0) {
                 if(is_create) {
-                    AjaxQuery('/api/users/', handleResponse, 'POST', data);
+                    createUser(req_data);
                 } else {
-                    let url = '/api/users/'+user.id;
-                    AjaxQuery(url, handleResponse, 'PUT', data);
+                    updateUser({userId: data.id, userData: req_data});
                 }
             } else {
                 setErrorMessage('Нет изменений для сохранения');
@@ -150,31 +153,11 @@ const Edit = ({ user, onClose, loading = false, error = null, is_create = false 
     }
 
     const handleDelete = () => {
-        let url = '/api/users/'+user.id;
-        AjaxQuery(url, handleDeleteResponse, 'DELETE');
-    }
-
-    const handleDeleteResponse = (response) => {
-        if (response.status === 200) {
-            return navigate('/admin/users');
-        } else {
-            setErrorMessage('Ошибка удаления');
-        }
-    }
-
-    const handleResponse = (response) => {
-        if (response.status === 200 && response.data) {
-            return navigate('/admin/users');
-        } else if(response.status === 422 && response?.data.message) {
-            setErrorMessage(response?.data.message);
-        } else {
-            setErrorMessage('Ошибка сохранения');
-        }
+       deleteUser(data.id);
     }
 
     return (
         <div className="user-details">
-            {is_edit_or_crete ? (
                 <div>
                     <div>
                         <Container className="mt-3">
@@ -214,7 +197,7 @@ const Edit = ({ user, onClose, loading = false, error = null, is_create = false 
                                             />
                                         </Form.Group>
 
-                                        {user.profile && (
+                                        {data.profile && (
                                             <div>
                                                 <Form.Group className='mb-3'>
                                                     <Form.Label>О себе</Form.Label>
@@ -278,41 +261,6 @@ const Edit = ({ user, onClose, loading = false, error = null, is_create = false 
                         </Container>
                     </div>
                 </div>
-            ) : (
-                <div>
-                    <div>Аватар: {user.avatar}</div>
-                    <div>{user.last_name} {user.name}</div>
-                    <div>Email: {user.email}</div>
-                    <div>Статус: {user.banned ? 'заблокирован' : 'активен'}</div>
-                    {user.parent_user_id && (
-                        <div>Является соредактором для: {user.parent_user_id}</div>
-                    )}
-                    {user.profile && (
-                        <div>
-                            <div>Профиль</div>
-                            <div>д.р.: {formatDate.toViewDate(user.profile.birth)}</div>
-                            {user.profile.description && (
-                                <div>О себе: {user.profile.description}</div>
-                            )}
-                        </div>
-                    )}
-                    <div>
-                        <Button 
-                            variant='primary' 
-                            className='me-1'
-                            onClick={toggleEdit}
-                        >
-                            Редактировать
-                        </Button>
-                        <Button 
-                            variant='primary' 
-                            onClick={onClose}
-                        >
-                            Закрыть
-                        </Button>
-                    </div>
-                </div>
-            )}
         </div>
     );
 }

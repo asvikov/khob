@@ -4,9 +4,9 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import AjaxQuery from '../../services/AjaxOuery';
 import FormValidateService from '../../services/FormValidateService';
-import { useNavigate } from 'react-router-dom';
+import { useRegister } from '../../hooks/useAuth';
+import { useUsersForRegister } from '../../hooks/useUsers';
 
 const Register = () => {
     const [first_name, setFirstName] = useState('');
@@ -15,13 +15,21 @@ const Register = () => {
     const [password, setPassword] = useState('');
     const [conf_password, setConfPassword] = useState('');
     const [radio_val, setRadioVal] = useState('own');
-    const [pn_options, setPnOptions] = useState([]);
+    const [pn_options, setPnOptions] = useState(false);
     const [parent_id, setParentId] = useState(false);
     const [parent_elem, setParentElem] = useState('');
     const [error_message, setErrorMessage] = useState('');
     const [corr_inputs, setCorrInputs] = useState({});
+    const [searchName, setSearchName] = useState('');
     const valid = new FormValidateService();
-    const navigate = useNavigate();
+    const { mutate: register } = useRegister({
+        onError: (error) => {
+            if(error.status === 422) {
+                setErrorMessage(error.message);
+            }
+        }
+    });
+    const { data: users, isLoading, error } = useUsersForRegister(searchName);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -47,21 +55,7 @@ const Register = () => {
             if(parent_id) {
                 data.parent_id = parent_id;
             }
-            AjaxQuery('/api/register', handleResponse, 'POST', data);
-        }
-    }
-
-    const handleResponse = (responce) => {
-
-        if(responce.errors && responce.message) {
-            setErrorMessage(responce.message);
-        } else {
-            if(responce.status === 200) {
-                let json_user = JSON.stringify(responce.data.user);
-                localStorage.setItem('user', json_user);
-
-                return navigate('/users');
-            }
+            register(data);
         }
     }
 
@@ -70,33 +64,24 @@ const Register = () => {
 
         if(event.target.value === 'own') {
             setParentId(false);
-            setPnOptions([]);
-        }
-    }
-
-    const setHtmlPnOptions = (query_data) => {
-        if(query_data.status === 200) {
-            let html = query_data.data.map((user) => {
-                user.img_src = user.avatar ? user.avatar : '/storage/img/no_img_avatar.webp';
-                let div = <div key={user.id} className="my-mod-lis-elem" onClick={() => handlePickParUser(user)}><img src={user.img_src} /><div>{user.name+' '+user.last_name}</div></div>;
-                return div;
-            });
-
-            setPnOptions(html);
+            setPnOptions(false);
         }
     }
 
     const handleParentName = (event) => {
         if(event.target.value.length > 2) {
-            AjaxQuery('/api/forregisterusers', setHtmlPnOptions, 'POST', {'name':event.target.value});
+            let susname = event.target.value.trim();
+            setSearchName(susname);
+            setPnOptions(true);
+            //refetch();
         } else {
-            setPnOptions([]);
+            setPnOptions(false);
         }
     }
 
     const handlePickParUser = (user) => {
         setParentId(user.id);
-        setPnOptions([]);
+        setPnOptions(false);
         setParentElem(<div className="my-mod-lis-elem"><img src={user.img_src} /><div>{user.name+' '+user.last_name}</div><div role='button' onClick={handleDelParUs}>&#10060;</div></div>);
     }
 
@@ -134,9 +119,11 @@ const Register = () => {
                         <Form.Group className='mb-3' hidden={parent_id}>
                             <Form.Label>К кому вы хотите прсоединиться</Form.Label>
                             <Form.Control type='text' placeholder='начните вводить имя' disabled={radio_val === 'own'} onChange={handleParentName} />
-                            <div className='my-modal-container' hidden={!pn_options.length}>
+                            <div className='my-modal-container' hidden={!pn_options}>
                                 <div className='form-control my-modal-list'>
-                                    {pn_options}
+                                    {Array.isArray(users) && users.length > 0 && users.map((user) => {
+                                        return (<div key={user.id} className="my-mod-lis-elem" onClick={() => handlePickParUser(user)}><img src={user.avatar ? user.avatar : '/storage/img/no_img_avatar.webp'} /><div>{user.name + ' ' + user.last_name}</div></div>);
+                                    })}
                                 </div>
                             </div>
                         </Form.Group>
