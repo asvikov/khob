@@ -1,22 +1,17 @@
 import React from 'react';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import { Outlet } from 'react-router-dom';
-import MainMenu from './navigation/MainMenu';
 
 const Main = () => {
     return (
-        <Container className="mt-3 px-0">
-                <Row>
-                    <Col md="4">
-                        <MainMenu />
-                    </Col>
-                    <Col>
+        <div className="min-h-screen bg-slate-50">
+            <div className="max-w-7xl mx-auto px-4 py-6">
+                <div className="flex flex-col md:flex-row gap-6">
+                    <div className="flex-1">
                         <Outlet />
-                    </Col>
-                </Row>
-        </Container>
+                    </div>
+                </div>
+            </div>
+        </div>
     );
 }
 

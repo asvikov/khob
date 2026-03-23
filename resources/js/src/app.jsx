@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
-import '../../scss/custom.scss';
+import '../../css/app.css';
 import Main from './components/Main';
 import MainAdmin from './components/admin/MainAdmin';
 import Dashboard from './components/admin/Dashboard';

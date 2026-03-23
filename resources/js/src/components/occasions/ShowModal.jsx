@@ -105,55 +105,72 @@ const Modal = ({ show, onCloseButtonClick, occasion_id }) => {
     const hasError = dataError || (!isLoadingData && !occasion_data);
 
     return ReactDOM.createPortal(
-        <div className="modal-wrapper-occ">
-            <div className='modal-white-bacgound'>
-                <div className="modal-content">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[80vh] overflow-y-auto">
+                <div className="p-6">
                     {isLoading ? (
-                        <div className="text-center p-5">
-                            <div className="spinner-border" role="status">
-                                <span className="visually-hidden">Загрузка...</span>
-                            </div>
-                            <p className="mt-3">Загрузка данных...</p>
+                        <div className="text-center py-8">
+                            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-teal-600 mx-auto"></div>
+                            <p className="mt-4 text-slate-600">Загрузка данных...</p>
                         </div>
                     ) : hasError ? (
-                        <div className="alert alert-danger">
-                            Ошибка загрузки данных события
-                            <button 
-                                onClick={onCloseButtonClick} 
-                                className="btn btn-secondary mt-3 d-block"
+                        <div>
+                            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl mb-4">
+                                Ошибка загрузки данных события
+                            </div>
+                            <button
+                                onClick={onCloseButtonClick}
+                                className="px-4 py-2 bg-slate-200 text-slate-700 rounded-xl hover:bg-slate-300 transition-colors"
                             >
                                 Закрыть
                             </button>
                         </div>
                     ) : (
                         <div>
-                            <div>
-                                <div>
-                                    <span className="modal-occ-name-p">начало события: </span>
+                            <div className="space-y-3">
+                                <div className="flex items-center gap-2 text-sm text-slate-600">
+                                    <div className="w-4 h-4 flex items-center justify-center text-teal-500">
+                                        <i className="ri-calendar-event-line text-sm"></i>
+                                    </div>
+                                    <span className="font-medium text-slate-700">начало события:</span>
                                     {occasion_data.start ? FormDate.toView(occasion_data.start) : 'не указано'}
                                 </div>
-                                <div>
-                                    <span className="modal-occ-name-p">окончание события: </span>
+                                <div className="flex items-center gap-2 text-sm text-slate-600">
+                                    <div className="w-4 h-4 flex items-center justify-center text-rose-400">
+                                        <i className="ri-time-line text-sm"></i>
+                                    </div>
+                                    <span className="font-medium text-slate-700">окончание события:</span>
                                     {occasion_data.end ? FormDate.toView(occasion_data.end) : 'не указано'}
                                 </div>
-                                <div>
-                                    <span className="modal-occ-name-p">описание: </span>
+                                <div className="flex items-start gap-2 text-sm text-slate-600">
+                                    <svg className="w-5 h-5 text-teal-500 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                    <span className="font-medium text-slate-700">описание:</span>
                                     {occasion_data.description || 'нет описания'}
                                 </div>
-                                <div>
-                                    <span className="modal-occ-name-p">место проведения: </span>
+                                <div className="flex items-start gap-2 text-sm text-slate-600">
+                                    <div className="w-4 h-4 flex items-center justify-center text-slate-400 mt-0.5 flex-shrink-0">
+                                        <i className="ri-map-pin-2-line text-sm"></i>
+                                    </div>
+                                    <span className="font-medium text-slate-700">место проведения:</span>
                                     {occasion_data.address || 'адрес не указан'}
                                 </div>
                                 {scriptLoaded && occasion_data?.location ? (
-                                    <div className='modal-occ-map' id='occ_map'></div>
+                                    <div className='mt-4 h-64 rounded-xl overflow-hidden border border-slate-200' id='occ_map'></div>
                                 ) : (
-                                    <div className="alert alert-info mt-3">
+                                    <div className="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-3 rounded-xl mt-4">
                                         Карта недоступна
                                     </div>
                                 )}
                             </div>
-                            <div className="modal-actions">
-                                <button onClick={onCloseButtonClick}>Закрыть</button>
+                            <div className="flex justify-end pt-4 border-slate-200">
+                                <button 
+                                    onClick={onCloseButtonClick}
+                                    className="px-5 py-2.5 bg-slate-200 text-slate-700 font-medium rounded-xl hover:bg-slate-300 transition-colors"
+                                >
+                                    Закрыть
+                                </button>
                             </div>
                         </div>
                     )}

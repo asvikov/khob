@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import FormValidateService from '../../../services/FormValidateService';
-import Container from 'react-bootstrap/Container';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import FormatDate from '../../../services/FormatDate';
 import { useNavigate } from 'react-router-dom';
 import { useUser, useCreateUser, useUpdateUser, useDeleteUser } from '../../../hooks/useUsers';
@@ -31,8 +26,8 @@ const Edit = ({ userId, onClose }) => {
     const { mutate: createUser, isPending } = useCreateUser(handleResponseOb);
     const { mutate: updateUser } = useUpdateUser(handleResponseOb);
     const { mutate: deleteUser } = useDeleteUser(handleResponseOb);
-    
-    
+
+
     const [formData, setFormData] = useState({
         first_name: '',
         last_name: '',
@@ -84,7 +79,7 @@ const Edit = ({ userId, onClose }) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        
+
         const valid = new FormValidateService();
         let is_corr = {};
         let req_data = {};
@@ -157,110 +152,135 @@ const Edit = ({ userId, onClose }) => {
     }
 
     return (
-        <div className="user-details">
+        <div className="user-details max-w-4xl mx-auto mt-8 px-4">
+            <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                    <div>
-                        <Container className="mt-3">
-                            <Row>
-                                <Col lg={8}>
-                                    <Form onSubmit={handleSubmit}>
-                                        <Form.Group className='mb-3'>
-                                            <Form.Label>Имя</Form.Label>
-                                            <Form.Control 
-                                                type='text' 
-                                                className={(corr_inputs.first_name === false) ? 'is-invalid' : ''} 
-                                                value={formData.first_name} 
-                                                placeholder='Введите имя' 
-                                                onChange={(e) => handleChange('first_name', e.target.value)} 
-                                            />
-                                        </Form.Group>
-                                        
-                                        <Form.Group className='mb-3'>
-                                            <Form.Label>Фамилия</Form.Label>
-                                            <Form.Control 
-                                                type='text' 
-                                                className={(corr_inputs.last_name === false) ? 'is-invalid' : ''} 
-                                                value={formData.last_name} 
-                                                placeholder='Введите фамилию' 
-                                                onChange={(e) => handleChange('last_name', e.target.value)} 
-                                            />
-                                        </Form.Group>
-                                        
-                                        <Form.Group className='mb-3'>
-                                            <Form.Label>Email</Form.Label>
-                                            <Form.Control 
-                                                type='email' 
-                                                className={(corr_inputs.email === false) ? 'is-invalid' : ''} 
-                                                value={formData.email} 
-                                                placeholder='Введите свой email' 
-                                                onChange={(e) => handleChange('email', e.target.value)} 
-                                            />
-                                        </Form.Group>
-
-                                        {data.profile && (
-                                            <div>
-                                                <Form.Group className='mb-3'>
-                                                    <Form.Label>О себе</Form.Label>
-                                                    <Form.Control 
-                                                        type='text' 
-                                                        value={formData.description}  
-                                                        onChange={(e) => handleChange('description', e.target.value)} 
-                                                    />
-                                                </Form.Group>
-                                                <Form.Group className='mb-3'>
-                                                    <Form.Label>д.р.</Form.Label>
-                                                    <Form.Control 
-                                                        type='date' 
-                                                        value={formatDate.toInputDate(formData.birth)} 
-                                                        onChange={(e) => handleChange('birth', e.target.value)} 
-                                                    />
-                                                </Form.Group>
-                                            </div>
-                                        )}
-                                        
-                                        <Form.Group className='mb-3'>
-                                            <Form.Label>Задать пароль</Form.Label>
-                                            <Form.Control 
-                                                type='password' 
-                                                className={(corr_inputs.password === false) ? 'is-invalid' : ''} 
-                                                value={formData.password} 
-                                                placeholder='Задать пароль' 
-                                                onChange={(e) => handleChange('password', e.target.value)} 
-                                            />
-                                        </Form.Group>
-                                        
-                                        <Form.Group className='mb-3'>
-                                            <Form.Label>Подтверждение пароля</Form.Label>
-                                            <Form.Control 
-                                                type='password' 
-                                                className={(corr_inputs.password === false) ? 'is-invalid' : ''} 
-                                                value={formData.conf_password} 
-                                                placeholder='Подтвердите пароль' 
-                                                onChange={(e) => handleChange('conf_password', e.target.value)} 
-                                            />
-                                        </Form.Group>
-                                        
-                                        <Form.Check 
-                                            type='checkbox' 
-                                            label='Заблокирован' 
-                                            checked={formData.banned}
-                                            onChange={(e) => handleChange('banned', e.target.checked)} 
-                                            className='mb-2'
-                                        />
-                                        {!is_create && (<div role='button' className='mb-3' onClick={handleDelete}>удалить пользователя ✘</div>)}
-                                        <div className='mb-2 text-danger'>{error_message}</div>
-                                        <Button variant='primary' type='submit' className='me-1'>
-                                            Сохранить
-                                        </Button>
-                                        <Button variant='primary' onClick={handleCancel}>
-                                            Отмена
-                                        </Button>
-                                    </Form>
-                                </Col>
-                            </Row>
-                        </Container>
-                    </div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1.5">Имя</label>
+                    <input
+                        type='text'
+                        className={`w-full px-4 py-2.5 border rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all ${
+                            corr_inputs.first_name === false ? 'border-red-500 bg-red-50' : 'border-slate-300'
+                        }`}
+                        value={formData.first_name}
+                        placeholder='Введите имя'
+                        onChange={(e) => handleChange('first_name', e.target.value)}
+                    />
                 </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1.5">Фамилия</label>
+                    <input
+                        type='text'
+                        className={`w-full px-4 py-2.5 border rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all ${
+                            corr_inputs.last_name === false ? 'border-red-500 bg-red-50' : 'border-slate-300'
+                        }`}
+                        value={formData.last_name}
+                        placeholder='Введите фамилию'
+                        onChange={(e) => handleChange('last_name', e.target.value)}
+                    />
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1.5">Email</label>
+                    <input
+                        type='email'
+                        className={`w-full px-4 py-2.5 border rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all ${
+                            corr_inputs.email === false ? 'border-red-500 bg-red-50' : 'border-slate-300'
+                        }`}
+                        value={formData.email}
+                        placeholder='Введите свой email'
+                        onChange={(e) => handleChange('email', e.target.value)}
+                    />
+                </div>
+
+                {data.profile && (
+                    <div className="space-y-4">
+                        <div>
+                            <label className="block text-sm font-medium text-slate-700 mb-1.5">О себе</label>
+                            <input
+                                type='text'
+                                className="w-full px-4 py-2.5 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
+                                value={formData.description}
+                                onChange={(e) => handleChange('description', e.target.value)}
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-slate-700 mb-1.5">д.р.</label>
+                            <input
+                                type='date'
+                                className="w-full px-4 py-2.5 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
+                                value={formatDate.toInputDate(formData.birth)}
+                                onChange={(e) => handleChange('birth', e.target.value)}
+                            />
+                        </div>
+                    </div>
+                )}
+
+                <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1.5">Задать пароль</label>
+                    <input
+                        type='password'
+                        className={`w-full px-4 py-2.5 border rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all ${
+                            corr_inputs.password === false ? 'border-red-500 bg-red-50' : 'border-slate-300'
+                        }`}
+                        value={formData.password}
+                        placeholder='Задать пароль'
+                        onChange={(e) => handleChange('password', e.target.value)}
+                    />
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1.5">Подтверждение пароля</label>
+                    <input
+                        type='password'
+                        className={`w-full px-4 py-2.5 border rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all ${
+                            corr_inputs.password === false ? 'border-red-500 bg-red-50' : 'border-slate-300'
+                        }`}
+                        value={formData.conf_password}
+                        placeholder='Подтвердите пароль'
+                        onChange={(e) => handleChange('conf_password', e.target.value)}
+                    />
+                </div>
+
+                <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                        type='checkbox'
+                        checked={formData.banned}
+                        onChange={(e) => handleChange('banned', e.target.checked)}
+                        className="w-4 h-4 text-teal-600 rounded focus:ring-teal-500"
+                    />
+                    <span className="text-slate-700">Заблокирован</span>
+                </label>
+
+                {!is_create && (
+                    <button
+                        type='button'
+                        onClick={handleDelete}
+                        className="text-red-600 hover:text-red-700 font-medium transition-colors"
+                    >
+                        удалить пользователя ✘
+                    </button>
+                )}
+
+                <div className='text-danger text-sm'>{error_message}</div>
+
+                <div className="flex gap-3">
+                    <button
+                        type='submit'
+                        disabled={isPending}
+                        className="px-5 py-2.5 bg-gradient-to-r from-teal-500 to-cyan-600 text-white font-medium rounded-xl hover:from-teal-600 hover:to-cyan-700 transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        Сохранить
+                    </button>
+                    <button
+                        type='button'
+                        onClick={handleCancel}
+                        className="px-5 py-2.5 bg-slate-200 text-slate-700 font-medium rounded-xl hover:bg-slate-300 transition-colors"
+                    >
+                        Отмена
+                    </button>
+                </div>
+            </form>
         </div>
     );
 }

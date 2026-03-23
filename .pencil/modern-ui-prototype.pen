@@ -1,0 +1,184 @@
+{
+  "version": "2.9",
+  "children": [
+    {
+      "type": "frame",
+      "id": "sidebarFrame",
+      "x": 0,
+      "y": 0,
+      "name": "Sidebar Menu",
+      "clip": true,
+      "width": 260,
+      "height": 800,
+      "fill": "#2c3e50",
+      "layout": "none",
+      "children": [
+        {
+          "type": "text",
+          "id": "logoText",
+          "x": 30,
+          "y": 40,
+          "name": "Logo",
+          "content": "KHOB",
+          "fontFamily": "Arial Black",
+          "fontSize": 28,
+          "fontWeight": "bold"
+        },
+        {
+          "type": "rectangle",
+          "id": "menuDivider1",
+          "x": 30,
+          "y": 90,
+          "name": "Divider",
+          "fill": "#34495e",
+          "width": 200,
+          "height": 2
+        },
+        {
+          "type": "rectangle",
+          "id": "menuItem1Active",
+          "x": 20,
+          "y": 120,
+          "name": "Menu Item - Все события (Active)",
+          "fill": "#667eea",
+          "width": 220,
+          "height": 50
+        },
+        {
+          "type": "rectangle",
+          "id": "menuItem2",
+          "x": 20,
+          "y": 180,
+          "name": "Menu Item - Профиль",
+          "fill": "transparent",
+          "width": 220,
+          "height": 50
+        },
+        {
+          "type": "text",
+          "id": "menuItem2Text",
+          "x": 60,
+          "y": 205,
+          "name": "Menu Text 2",
+          "content": "👤 Профиль",
+          "fontFamily": "Arial",
+          "fontSize": 16,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "menuItem3",
+          "x": 20,
+          "y": 240,
+          "name": "Menu Item - Мои события",
+          "fill": "transparent",
+          "width": 220,
+          "height": 50
+        },
+        {
+          "type": "text",
+          "id": "menuItem3Text",
+          "x": 60,
+          "y": 265,
+          "name": "Menu Text 3",
+          "content": "📋 Мои события",
+          "fontFamily": "Arial",
+          "fontSize": 16,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "menuItem4",
+          "x": 20,
+          "y": 300,
+          "name": "Menu Item - Настройки",
+          "fill": "transparent",
+          "width": 220,
+          "height": 50
+        },
+        {
+          "type": "text",
+          "id": "menuItem4Text",
+          "x": 60,
+          "y": 325,
+          "name": "Menu Text 4",
+          "content": "⚙️ Настройки",
+          "fontFamily": "Arial",
+          "fontSize": 16,
+          "fontWeight": "normal"
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "mainContentFrame",
+      "x": 260,
+      "y": 0,
+      "name": "Main Content Area",
+      "clip": true,
+      "width": 940,
+      "height": 800,
+      "fill": "#f8f9fa",
+      "layout": "none",
+      "children": [
+        {
+          "type": "frame",
+          "id": "headerFrame",
+          "x": 40,
+          "y": 19,
+          "name": "Header Section",
+          "clip": true,
+          "width": 920,
+          "height": 120,
+          "fill": "transparent",
+          "layout": "none",
+          "children": [
+            {
+              "type": "rectangle",
+              "id": "headerGradient",
+              "x": 280,
+              "y": 20,
+              "name": "Header Background",
+              "fill": "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+              "width": 880,
+              "height": 100
+            },
+            {
+              "type": "text",
+              "id": "pageTitle",
+              "x": 310,
+              "y": 65,
+              "name": "Page Title",
+              "content": "Календарь событий",
+              "fontFamily": "Arial",
+              "fontSize": 28,
+              "fontWeight": "bold"
+            },
+            {
+              "type": "rectangle",
+              "id": "addEventButton",
+              "x": 950,
+              "y": 50,
+              "name": "Add Event Button",
+              "fill": "#ffffff",
+              "width": 180,
+              "height": 45
+            },
+            {
+              "type": "text",
+              "id": "addEventButtonText",
+              "x": 1040,
+              "y": 72,
+              "name": "Button Text",
+              "content": "+ Добавить событие",
+              "textAlign": "center",
+              "fontFamily": "Arial",
+              "fontSize": 15,
+              "fontWeight": "600"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

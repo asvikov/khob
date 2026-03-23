@@ -2,8 +2,6 @@ import { useEffect, useState, useRef } from "react";
 import ReactDOM from 'react-dom';
 import FormValidateService from "../../services/FormValidateService";
 import FormatDate from "../../services/FormatDate";
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
 import { useQueryClient } from '@tanstack/react-query';
 import { useOccasion, useCreateOccasion, useUpdateOccasion, useDeleteOccasion } from "../../hooks/useOccasions";
 
@@ -20,7 +18,7 @@ const AddOccasion = ({ hideFunc, show = true, occasion_id = null }) => {
     const [corr_inputs, setCorrInputs] = useState({});
     const [error_message, setErrorMessage] = useState('');
     const [scriptLoaded, setScriptLoaded] = useState(false);
-    
+
     const mapInstanceRef = useRef(null);
     const valid = new FormValidateService();
     const FormDate = new FormatDate();
@@ -204,7 +202,7 @@ const AddOccasion = ({ hideFunc, show = true, occasion_id = null }) => {
 
     const addPoint = (coords, address, map) => {
         if (!map) return;
-        
+
         map.geoObjects.removeAll();
 
         const placemark = new window.ymaps.Placemark(
@@ -296,68 +294,113 @@ const AddOccasion = ({ hideFunc, show = true, occasion_id = null }) => {
     const isLoading = !scriptLoaded || (occasion_id && isLoadingData);
 
     return ReactDOM.createPortal(
-        <div className="modal-wrapper-occ">
-            <div className="modal-white-bacgound">
-                <div className="modal-content">
-                    {isLoading ? (
-                        <div className="text-center p-5">
-                            <div className="spinner-border" role="status">
-                                <span className="visually-hidden">Загрузка...</span>
-                            </div>
-                            <p className="mt-3">Загрузка карты и данных...</p>
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+            <div className="absolute inset-0 bg-slate-900/30 backdrop-blur-sm"></div>
+            <div className="relative bg-white rounded-2xl w-full max-w-lg mx-4 overflow-hidden">
+                <form className="px-6 py-5 flex flex-col gap-4">
+                    <div className="grid grid-cols-2 gap-3">
+                        <div>
+                            <label className="block text-sm font-medium text-slate-700 mb-1.5">Начало</label>
+                            <input
+                                type="datetime-local"
+                                className={`w-full px-3 py-2.5 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-400/20 focus:border-teal-400 transition-all ${corr_inputs.start === false ? 'border-red-500 bg-red-50' : 'border-slate-300'
+                                    }`}
+                                onChange={(e) => { handleChange('start', e.target.value) }}
+                                value={FormDate.toInputDateTime(formData.start)}
+                            />
                         </div>
-                    ) : dataError ? (
-                        <div className="alert alert-danger">
-                            Ошибка загрузки данных: {dataError.message}
-                            <Button variant="secondary" onClick={hideFunc} className="mt-3">
-                                Закрыть
-                            </Button>
+                        <div>
+                            <label className="block text-sm font-medium text-slate-700 mb-1.5">Конец</label>
+                            <input
+                                type="datetime-local"
+                                className={`w-full px-3 py-2.5 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-400/20 focus:border-teal-400 transition-all ${corr_inputs.end === false ? 'border-red-500 bg-red-50' : 'border-slate-300'
+                                    }`}
+                                onChange={(e) => { handleChange('end', e.target.value) }}
+                                value={FormDate.toInputDateTime(formData.end)}
+                            />
                         </div>
-                    ) : (
-                        <Form onSubmit={handleSubmit}>
-                            <Form.Group className="mb-3">
-                                <Form.Label>начало события</Form.Label>
-                                <Form.Control
-                                    type="datetime-local"
-                                    className={(corr_inputs.start === false) ? 'is-invalid' : ''}
-                                    onChange={(e) => { handleChange('start', e.target.value) }}
-                                    value={FormDate.toInputDateTime(formData.start)}
-                                />
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                                <Form.Label>окончание события (не обязательно)</Form.Label>
-                                <Form.Control
-                                    type="datetime-local"
-                                    className={(corr_inputs.end === false) ? 'is-invalid' : ''}
-                                    onChange={(e) => { handleChange('end', e.target.value) }}
-                                    value={FormDate.toInputDateTime(formData.end)}
-                                />
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                                <Form.Label>описание события</Form.Label>
-                                <Form.Control
-                                    as="textarea"
-                                    rows={3}
-                                    className={(corr_inputs.description === false) ? 'is-invalid' : ''}
-                                    onChange={(e) => { handleChange('description', e.target.value) }}
-                                    value={formData.description}
-                                />
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                                <Form.Label className={(corr_inputs.location === false) ? 'text-danger' : ''}>
-                                    Адрес: {formData.address}
-                                </Form.Label>
-                                <div id='occ_add_map' className="occ-add-map"></div>
-                            </Form.Group>
-                            <Form.Group className="mb-3 occ-save-gr-butt">
-                                {occasion_id && (<div role='button' onClick={handleDelete}>удалить ✘</div>)}
-                                <div className='mb-2 text-danger'>{error_message}</div>
-                                <Button variant='primary' type="submit">Сохранить</Button>
-                                <Button variant='secondary' onClick={hideFunc}>Отмена</Button>
-                            </Form.Group>
-                        </Form>
-                    )}
-                </div>
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                            описание события
+                        </label>
+                        <textarea
+                            rows={3}
+                            className={`w-full px-3 py-2.5 text-sm border ${corr_inputs.description === false ? 'border-red-500 bg-red-50' : 'border-slate-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-400/20 focus:border-teal-400 transition-all resize-none`}
+                            onChange={(e) => { handleChange('description', e.target.value) }}
+                            value={formData.description}
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-slate-700 mb-1.5">Категория</label>
+                        <div className="flex flex-wrap gap-2 w-full">
+                            <button
+                                type="button"
+                                className="px-3 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer whitespace-nowrap bg-teal-500 text-white"
+                            >
+                                Культура
+                            </button>
+                            <button
+                                type="button"
+                                className="px-3 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer whitespace-nowrap bg-slate-100 text-slate-600 hover:bg-slate-200"
+                            >
+                                Технологии
+                            </button>
+                            <button
+                                type="button"
+                                className="px-3 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer whitespace-nowrap bg-slate-100 text-slate-600 hover:bg-slate-200"
+                            >
+                                Спорт
+                            </button>
+                            <button
+                                type="button"
+                                className="px-3 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer whitespace-nowrap bg-slate-100 text-slate-600 hover:bg-slate-200"
+                            >
+                                Мастер-классы
+                            </button>
+                            <button
+                                type="button"
+                                className="px-3 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer whitespace-nowrap bg-slate-100 text-slate-600 hover:bg-slate-200"
+                            >
+                                Музыка
+                            </button>
+                            <button
+                                type="button"
+                                className="px-3 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer whitespace-nowrap bg-slate-100 text-slate-600 hover:bg-slate-200"
+                            >
+                                Еда
+                            </button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label className={`block text-sm font-medium mb-1.5 ${corr_inputs.location === false ? 'text-red-600' : 'text-slate-700'
+                            }`}>
+                            Место проведения: {formData.address}
+                        </label>
+                        <div id='occ_add_map' className="w-full h-72 rounded-xl overflow-hidden border border-slate-200"></div>
+                    </div>
+
+
+                    <div className="flex gap-3 pt-1">
+                        {error_message && (
+                            <span className="text-red-600 text-sm">{error_message}</span>
+                        )}
+                        <button
+                            type="button"
+                            onClick={hideFunc}
+                            className="flex-1 px-4 py-2.5 text-sm font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors cursor-pointer whitespace-nowrap"
+                        >
+                            Отмена
+                        </button>
+                        <button
+                            type="submit"
+                            className="flex-1 px-4 py-2.5 text-sm font-medium text-white bg-teal-500 hover:bg-teal-600 rounded-lg transition-colors cursor-pointer whitespace-nowrap"
+                        >
+                            Сохранить
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>,
         document.body

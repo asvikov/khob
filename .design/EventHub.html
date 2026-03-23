@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EventHub — Управление событиями</title>
+  <meta name="description" content="EventHub — современная платформа для создания и управления городскими событиями в Краснодаре">
+  <style></style>
+  <style></style>
+  <style></style>
+  <style></style>
+  <meta name="referrer" content="no-referrer">
+</head>
+<body>
+  <div id="root">
+    <div class="min-h-screen bg-slate-50" style='font-family:"Plus Jakarta Sans",sans-serif'>
+      <header class="fixed top-0 left-0 right-0 z-30 h-16 bg-white border-b border-slate-100 flex items-center px-6 gap-4">
+        <div class="flex items-center gap-3 w-64 flex-shrink-0">
+          <div class="w-8 h-8 flex items-center justify-center">
+            <img alt="Логотип" class="w-8 h-8 object-contain" src="">
+          </div>
+          <span class="font-semibold text-slate-800 text-lg tracking-tight whitespace-nowrap">EventHub</span>
+        </div>
+        <div class="flex-1 max-w-lg">
+          <div class="relative">
+            <div class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 flex items-center justify-center text-slate-400">
+              <i class="ri-search-line text-sm"></i>
+            </div>
+            <input placeholder="Поиск событий..." class="w-full pl-9 pr-4 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-400/20 focus:border-teal-400 transition-all" type="text" value="">
+          </div>
+        </div>
+        <div class="ml-auto flex items-center gap-3">
+          <button class="relative w-9 h-9 flex items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors cursor-pointer">
+            <i class="ri-notification-3-line text-lg"></i>
+            <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-teal-400 rounded-full"></span>
+          </button>
+          <div class="flex items-center gap-2.5 pl-3 border-l border-slate-100">
+            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center text-white text-sm font-semibold cursor-pointer">А</div>
+            <div class="flex flex-col">
+              <span class="text-sm font-medium text-slate-700 whitespace-nowrap">Алексей М.</span>
+              <span class="text-xs text-slate-400">Организатор</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <aside class="fixed left-0 top-16 bottom-0 w-64 bg-white border-r border-slate-100 flex flex-col z-20 overflow-hidden">
+        <div class="flex-1 overflow-y-auto py-6 px-3">
+          <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider px-3 mb-3">Навигация</p>
+          <nav class="flex flex-col gap-1">
+            <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all cursor-pointer whitespace-nowrap bg-teal-500 text-white">
+              <div class="w-4 h-4 flex items-center justify-center">
+                <i class="ri-calendar-2-fill text-base"></i>
+              </div>
+              Все события
+            </button>
+            <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all cursor-pointer whitespace-nowrap text-slate-500 hover:bg-slate-50 hover:text-slate-800">
+              <div class="w-4 h-4 flex items-center justify-center">
+                <i class="ri-bookmark-line text-base"></i>
+              </div>
+              Мои события
+              <span class="ml-auto text-xs px-1.5 py-0.5 rounded-full font-semibold bg-slate-100 text-slate-500">3</span>
+            </button>
+            <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all cursor-pointer whitespace-nowrap text-slate-500 hover:bg-slate-50 hover:text-slate-800">
+              <div class="w-4 h-4 flex items-center justify-center">
+                <i class="ri-user-3-line text-base"></i>
+              </div>
+              Профиль
+            </button>
+          </nav>
+
+          <div class="mt-8">
+            <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider px-3 mb-3">Категории</p>
+            <div class="flex flex-col gap-1">
+              <button class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition-all cursor-pointer whitespace-nowrap">
+                <div class="w-4 h-4 flex items-center justify-center">
+                  <i class="ri-palette-line text-base text-violet-500"></i>
+                </div>
+                Культура
+              </button>
+              <button class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition-all cursor-pointer whitespace-nowrap">
+                <div class="w-4 h-4 flex items-center justify-center">
+                  <i class="ri-code-s-slash-line text-base text-cyan-500"></i>
+                </div>
+                Технологии
+              </button>
+              <button class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition-all cursor-pointer whitespace-nowrap">
+                <div class="w-4 h-4 flex items-center justify-center">
+                  <i class="ri-run-line text-base text-orange-500"></i>
+                </div>
+                Спорт
+              </button>
+              <button class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition-all cursor-pointer whitespace-nowrap">
+                <div class="w-4 h-4 flex items-center justify-center">
+                  <i class="ri-music-2-line text-base text-amber-500"></i>
+                </div>
+                Музыка
+              </button>
+              <button class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition-all cursor-pointer whitespace-nowrap">
+                <div class="w-4 h-4 flex items-center justify-center">
+                  <i class="ri-restaurant-line text-base text-green-500"></i>
+                </div>
+                Еда
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-4 border-t border-slate-100">
+          <div class="bg-teal-50 rounded-xl p-4">
+            <div class="flex items-center gap-2 mb-2">
+              <div class="w-4 h-4 flex items-center justify-center text-teal-500">
+                <i class="ri-sparkle-line text-sm"></i>
+              </div>
+              <span class="text-xs font-semibold text-teal-700">Pro план</span>
+            </div>
+            <p class="text-xs text-slate-500 mb-3">Создавайте неограниченное количество событий</p>
+            <button class="w-full bg-teal-500 hover:bg-teal-600 text-white text-xs font-semibold py-2 rounded-lg transition-colors cursor-pointer whitespace-nowrap">Обновить план</button>
+          </div>
+        </div>
+      </aside>
+
+      <main class="ml-64 pt-16 min-h-screen">
+        <div class="p-8">
+          <div class="flex flex-col h-full">
+            <div class="flex items-center justify-between mb-4 flex-wrap gap-3">
+              <div>
+                <h1 class="text-xl font-semibold text-gray-900">Все события</h1>
+                <p class="text-sm text-gray-400 mt-0.5">6 событий в Краснодаре и области</p>
+              </div>
+              <div class="flex items-center gap-3">
+                <div class="flex items-center gap-1 bg-gray-100 rounded-lg p-0.5">
+                  <button class="px-3 py-1 rounded-md text-xs font-medium transition-all cursor-pointer whitespace-nowrap bg-white text-slate-800">По дате</button>
+                  <button class="px-3 py-1 rounded-md text-xs font-medium transition-all cursor-pointer whitespace-nowrap text-slate-500 hover:text-slate-700">По числу</button>
+                  <button class="px-3 py-1 rounded-md text-xs font-medium transition-all cursor-pointer whitespace-nowrap text-slate-500 hover:text-slate-700">По имени</button>
+                </div>
+                <button class="flex items-center gap-2 px-4 py-1.5 bg-teal-500 hover:bg-teal-600 text-white text-sm font-medium rounded-xl transition-colors cursor-pointer whitespace-nowrap">
+                  <div class="w-4 h-4 flex items-center justify-center">
+                    <i class="ri-add-line text-base"></i>
+                  </div>
+                  Добавить событие
+                </button>
+              </div>
+            </div>
+
+            <div class="flex flex-col gap-3">
+              <!-- Событие 1 -->
+              <div class="bg-white rounded-2xl p-6 border border-slate-100 hover:border-teal-200 transition-all group">
+                <div class="flex items-start justify-between gap-4">
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2 mb-3 flex-wrap">
+                      <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-violet-100 text-violet-700">Культура</span>
+                      <span class="flex items-center gap-1 text-xs text-slate-400"><i class="ri-group-line"></i>142 участников</span>
+                    </div>
+                    <h3 class="text-base font-semibold text-slate-800 mb-3 leading-snug">Открытие арт-галереи «Форма и Свет»</h3>
+                    <div class="flex flex-wrap gap-x-5 gap-y-1.5 mb-3">
+                      <div class="flex items-center gap-1.5 text-sm text-slate-500">
+                        <div class="w-4 h-4 flex items-center justify-center text-teal-500">
+                          <i class="ri-calendar-event-line text-sm"></i>
+                        </div>
+                        <span><span class="font-medium text-slate-600">Начало:</span> 19.03.26 16:10</span>
+                      </div>
+                      <div class="flex items-center gap-1.5 text-sm text-slate-500">
+                        <div class="w-4 h-4 flex items-center justify-center text-rose-400">
+                          <i class="ri-time-line text-sm"></i>
+                        </div>
+                        <span><span class="font-medium text-slate-600">Конец:</span> 19.03.26 20:00</span>
+                      </div>
+                    </div>
+                    <div class="flex items-start gap-1.5 mb-3">
+                      <div class="w-4 h-4 flex items-center justify-center text-slate-400 mt-0.5 flex-shrink-0">
+                        <i class="ri-map-pin-2-line text-sm"></i>
+                      </div>
+                      <span class="text-sm text-slate-500">Краснодар, ул. Коммунаров, 85</span>
+                    </div>
+                    <div class="flex items-center gap-3 mt-2">
+                      <button class="text-sm font-medium text-teal-600 hover:text-teal-700 transition-colors cursor-pointer flex items-center gap-1 whitespace-nowrap">
+                        Посмотреть событие
+                        <div class="w-4 h-4 flex items-center justify-center">
+                          <i class="ri-arrow-down-s-line text-base"></i>
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+                  <button class="opacity-0 group-hover:opacity-100 w-8 h-8 flex items-center justify-center rounded-lg bg-slate-100 hover:bg-teal-100 text-slate-400 hover:text-teal-600 transition-all cursor-pointer flex-shrink-0" title="Редактировать">
+                    <i class="ri-pencil-line text-sm"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Событие 2 -->
+              <div class="bg-white rounded-2xl p-6 border border-slate-100 hover:border-teal-200 transition-all group">
+                <div class="flex items-start justify-between gap-4">
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2 mb-3 flex-wrap">
+                      <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-cyan-100 text-cyan-700">Технологии</span>
+                      <span class="flex items-center gap-1 text-xs text-slate-400"><i class="ri-group-line"></i>380 участников</span>
+                    </div>
+                    <h3 class="text-base font-semibold text-slate-800 mb-3 leading-snug">IT-конференция DevKrasnodar 2026</h3>
+                    <div class="flex flex-wrap gap-x-5 gap-y-1.5 mb-3">
+                      <div class="flex items-center gap-1.5 text-sm text-slate-500">
+                        <div class="w-4 h-4 flex items-center justify-center text-teal-500">
+                          <i class="ri-calendar-event-line text-sm"></i>
+                        </div>
+                        <span><span class="font-medium text-slate-600">Начало:</span> 20.03.26 10:00</span>
+                      </div>
+                      <div class="flex items-center gap-1.5 text-sm text-slate-500">
+                        <div class="w-4 h-4 flex items-center justify-center text-rose-400">
+                          <i class="ri-time-line text-sm"></i>
+                        </div>
+                        <span><span class="font-medium text-slate-600">Конец:</span> 20.03.26 18:00</span>
+                      </div>
+                    </div>
+                    <div class="flex items-start gap-1.5 mb-3">
+                      <div class="w-4 h-4 flex items-center justify-center text-slate-400 mt-0.5 flex-shrink-0">
+                        <i class="ri-map-pin-2-line text-sm"></i>
+                      </div>
+                      <span class="text-sm text-slate-500">Краснодар, Конгресс-центр, ул. Янковского, 88</span>
+                    </div>
+                    <div class="flex items-center gap-3 mt-2">
+                      <button class="text-sm font-medium text-teal-600 hover:text-teal-700 transition-colors cursor-pointer flex items-center gap-1 whitespace-nowrap">
+                        Посмотреть событие
+                        <div class="w-4 h-4 flex items-center justify-center">
+                          <i class="ri-arrow-down-s-line text-base"></i>
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+                  <button class="opacity-0 group-hover:opacity-100 w-8 h-8 flex items-center justify-center rounded-lg bg-slate-100 hover:bg-teal-100 text-slate-400 hover:text-teal-600 transition-all cursor-pointer flex-shrink-0" title="Редактировать">
+                    <i class="ri-pencil-line text-sm"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Событие 3 -->
+              <div class="bg-white rounded-2xl p-6 border border-slate-100 hover:border-teal-200 transition-all group">
+                <div class="flex items-start justify-between gap-4">
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2 mb-3 flex-wrap">
+                      <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-orange-100 text-orange-700">Спорт</span>
+                      <span class="flex items-center gap-1 text-xs text-slate-400"><i class="ri-group-line"></i>620 участников</span>
+                    </div>
+                    <h3 class="text-base font-semibold text-slate-800 mb-3 leading-snug">Городской забег «Весенний марафон»</h3>
+                    <div class="flex flex-wrap gap-x-5 gap-y-1.5 mb-3">
+                      <div class="flex items-center gap-1.5 text-sm text-slate-500">
+                        <div class="w-4 h-4 flex items-center justify-center text-teal-500">
+                          <i class="ri-calendar-event-line text-sm"></i>
+                        </div>
+                        <span><span class="font-medium text-slate-600">Начало:</span> 21.03.26 08:30</span>
+                      </div>
+                      <div class="flex items-center gap-1.5 text-sm text-slate-500">
+                        <div class="w-4 h-4 flex items-center justify-center text-rose-400">
+                          <i class="ri-time-line text-sm"></i>
+                        </div>
+                        <span><span class="font-medium text-slate-600">Конец:</span> 21.03.26 13:00</span>
+                      </div>
+                    </div>
+                    <div class="flex items-start gap-1.5 mb-3">
+                      <div class="w-4 h-4 flex items-center justify-center text-slate-400 mt-0.5 flex-shrink-0">
+                        <i class="ri-map-pin-2-line text-sm"></i>
+                      </div>
+                      <span class="text-sm text-slate-500">Краснодар, Парк Победы, главный вход</span>
+                    </div>
+                    <div class="flex items-center gap-3 mt-2">
+                      <button class="text-sm font-medium text-teal-600 hover:text-teal-700 transition-colors cursor-pointer flex items-center gap-1 whitespace-nowrap">
+                        Посмотреть событие
+                        <div class="w-4 h-4 flex items-center justify-center">
+                          <i class="ri-arrow-down-s-line text-base"></i>
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+                  <button class="opacity-0 group-hover:opacity-100 w-8 h-8 flex items-center justify-center rounded-lg bg-slate-100 hover:bg-teal-100 text-slate-400 hover:text-teal-600 transition-all cursor-pointer flex-shrink-0" title="Редактировать">
+                    <i class="ri-pencil-line text-sm"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Событие 4 -->
+              <div class="bg-white rounded-2xl p-6 border border-slate-100 hover:border-teal-200 transition-all group">
+                <div class="flex items-start justify-between gap-4">
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2 mb-3 flex-wrap">
+                      <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-rose-100 text-rose-700">Мастер-классы</span>
+                      <span class="flex items-center gap-1 text-xs text-slate-400"><i class="ri-group-line"></i>15 участников</span>
+                    </div>
+                    <h3 class="text-base font-semibold text-slate-800 mb-3 leading-snug">Мастер-класс «Японская каллиграфия»</h3>
+                    <div class="flex flex-wrap gap-x-5 gap-y-1.5 mb-3">
+                      <div class="flex items-center gap-1.5 text-sm text-slate-500">
+                        <div class="w-4 h-4 flex items-center justify-center text-teal-500">
+                          <i class="ri-calendar-event-line text-sm"></i>
+                        </div>
+                        <span><span class="font-medium text-slate-600">Начало:</span> 22.03.26 14:00</span>
+                      </div>
+                      <div class="flex items-center gap-1.5 text-sm text-slate-500">
+                        <div class="w-4 h-4 flex items-center justify-center text-rose-400">
+                          <i class="ri-time-line text-sm"></i>
+                        </div>
+                        <span><span class="font-medium text-slate-600">Конец:</span> 22.03.26 17:00</span>
+                      </div>
+                    </div>
+                    <div class="flex items-start gap-1.5 mb-3">
+                      <div class="w-4 h-4 flex items-center justify-center text-slate-400 mt-0.5 flex-shrink-0">
+                        <i class="ri-map-pin-2-line text-sm"></i>
+                      </div>
+                      <span class="text-sm text-slate-500">Краснодар, Арт-студия Hanami, ул. Мира, 12</span>
+                    </div>
+                    <div class="flex items-center gap-3 mt-2">
+                      <button class="text-sm font-medium text-teal-600 hover:text-teal-700 transition-colors cursor-pointer flex items-center gap-1 whitespace-nowrap">
+                        Посмотреть событие
+                        <div class="w-4 h-4 flex items-center justify-center">
+                          <i class="ri-arrow-down-s-line text-base"></i>
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+                  <button class="opacity-0 group-hover:opacity-100 w-8 h-8 flex items-center justify-center rounded-lg bg-slate-100 hover:bg-teal-100 text-slate-400 hover:text-teal-600 transition-all cursor-pointer flex-shrink-0" title="Редактировать">
+                    <i class="ri-pencil-line text-sm"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Событие 5 -->
+              <div class="bg-white rounded-2xl p-6 border border-slate-100 hover:border-teal-200 transition-all group">
+                <div class="flex items-start justify-between gap-4">
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2 mb-3 flex-wrap">
+                      <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-700">Музыка</span>
+                      <span class="flex items-center gap-1 text-xs text-slate-400"><i class="ri-group-line"></i>450 участников</span>
+                    </div>
+                    <h3 class="text-base font-semibold text-slate-800 mb-3 leading-snug">Концерт симфонического оркестра</h3>
+                    <div class="flex flex-wrap gap-x-5 gap-y-1.5 mb-3">
+                      <div class="flex items-center gap-1.5 text-sm text-slate-500">
+                        <div class="w-4 h-4 flex items-center justify-center text-teal-500">
+                          <i class="ri-calendar-event-line text-sm"></i>
+                        </div>
+                        <span><span class="font-medium text-slate-600">Начало:</span> 23.03.26 19:00</span>
+                      </div>
+                      <div class="flex items-center gap-1.5 text-sm text-slate-500">
+                        <div class="w-4 h-4 flex items-center justify-center text-rose-400">
+                          <i class="ri-time-line text-sm"></i>
+                        </div>
+                        <span><span class="font-medium text-slate-600">Конец:</span> 23.03.26 21:30</span>
+                      </div>
+                    </div>
+                    <div class="flex items-start gap-1.5 mb-3">
+                      <div class="w-4 h-4 flex items-center justify-center text-slate-400 mt-0.5 flex-shrink-0">
+                        <i class="ri-map-pin-2-line text-sm"></i>
+                      </div>
+                      <span class="text-sm text-slate-500">Краснодар, Государственная Филармония</span>
+                    </div>
+                    <div class="flex items-center gap-3 mt-2">
+                      <button class="text-sm font-medium text-teal-600 hover:text-teal-700 transition-colors cursor-pointer flex items-center gap-1 whitespace-nowrap">
+                        Посмотреть событие
+                        <div class="w-4 h-4 flex items-center justify-center">
+                          <i class="ri-arrow-down-s-line text-base"></i>
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+                  <button class="opacity-0 group-hover:opacity-100 w-8 h-8 flex items-center justify-center rounded-lg bg-slate-100 hover:bg-teal-100 text-slate-400 hover:text-teal-600 transition-all cursor-pointer flex-shrink-0" title="Редактировать">
+                    <i class="ri-pencil-line text-sm"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Событие 6 -->
+              <div class="bg-white rounded-2xl p-6 border border-slate-100 hover:border-teal-200 transition-all group">
+                <div class="flex items-start justify-between gap-4">
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2 mb-3 flex-wrap">
+                      <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">Еда</span>
+                      <span class="flex items-center gap-1 text-xs text-slate-400"><i class="ri-group-line"></i>2&nbsp;100 участников</span>
+                    </div>
+                    <h3 class="text-base font-semibold text-slate-800 mb-3 leading-snug">Фестиваль уличной еды «ВкусFest»</h3>
+                    <div class="flex flex-wrap gap-x-5 gap-y-1.5 mb-3">
+                      <div class="flex items-center gap-1.5 text-sm text-slate-500">
+                        <div class="w-4 h-4 flex items-center justify-center text-teal-500">
+                          <i class="ri-calendar-event-line text-sm"></i>
+                        </div>
+                        <span><span class="font-medium text-slate-600">Начало:</span> 24.03.26 12:00</span>
+                      </div>
+                      <div class="flex items-center gap-1.5 text-sm text-slate-500">
+                        <div class="w-4 h-4 flex items-center justify-center text-rose-400">
+                          <i class="ri-time-line text-sm"></i>
+                        </div>
+                        <span><span class="font-medium text-slate-600">Конец:</span> 24.03.26 22:00</span>
+                      </div>
+                    </div>
+                    <div class="flex items-start gap-1.5 mb-3">
+                      <div class="w-4 h-4 flex items-center justify-center text-slate-400 mt-0.5 flex-shrink-0">
+                        <i class="ri-map-pin-2-line text-sm"></i>
+                      </div>
+                      <span class="text-sm text-slate-500">Краснодар, Набережная Кубани</span>
+                    </div>
+                    <div class="flex items-center gap-3 mt-2">
+                      <button class="text-sm font-medium text-teal-600 hover:text-teal-700 transition-colors cursor-pointer flex items-center gap-1 whitespace-nowrap">
+                        Посмотреть событие
+                        <div class="w-4 h-4 flex items-center justify-center">
+                          <i class="ri-arrow-down-s-line text-base"></i>
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+                  <button class="opacity-0 group-hover:opacity-100 w-8 h-8 flex items-center justify-center rounded-lg bg-slate-100 hover:bg-teal-100 text-slate-400 hover:text-teal-600 transition-all cursor-pointer flex-shrink-0" title="Редактировать">
+                    <i class="ri-pencil-line text-sm"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

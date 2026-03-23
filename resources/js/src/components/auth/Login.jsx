@@ -1,9 +1,4 @@
 import {useState} from 'react';
-import Container from 'react-bootstrap/Container';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import { useLogin } from '../../hooks/useAuth';
 
 const Login = () => {
@@ -36,24 +31,41 @@ const Login = () => {
     }
 
     return (
-        <Container className="mt-3">
-            <Row>
-                <Col lg={8}>
-                    <Form onSubmit={handleSubmit}>
-                        <Form.Group className='mb-3'>
-                            <Form.Label>Email</Form.Label>
-                            <Form.Control type='email' value={email} placeholder='введите свой email' onChange={handleEmailChange} />
-                        </Form.Group>
-                        <Form.Group className='mb-3'>
-                            <Form.Label>Пароль</Form.Label>
-                            <Form.Control type='password' value={password} placeholder='введите пароль' onChange={handlePasswordChange} />
-                        </Form.Group>
-                        <Button variant='primary' type='submit'>Войти</Button>
-                    </Form>
-                    <div className='text-danger'>{error_message}</div>
-                </Col>
-            </Row>
-        </Container>
+        <div className="min-h-screen bg-slate-50 flex items-center justify-center py-12 px-4">
+            <div className="max-w-2xl w-full">
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    <div>
+                        <label className="block text-sm font-medium text-slate-700 mb-1.5">Email</label>
+                        <input
+                            type='email'
+                            className="w-full px-4 py-2.5 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
+                            value={email}
+                            placeholder='введите свой email'
+                            onChange={handleEmailChange}
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-slate-700 mb-1.5">Пароль</label>
+                        <input
+                            type='password'
+                            className="w-full px-4 py-2.5 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
+                            value={password}
+                            placeholder='введите пароль'
+                            onChange={handlePasswordChange}
+                        />
+                    </div>
+                    <button
+                        type='submit'
+                        disabled={isPending}
+                        className="w-full px-6 py-2.5 bg-gradient-to-r from-teal-500 to-cyan-600 text-white font-medium rounded-xl hover:from-teal-600 hover:to-cyan-700 transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        {isPending ? 'Вход...' : 'Войти'}
+                    </button>
+                </form>
+                <div className='text-danger text-sm mt-4'>{error_message}</div>
+
+            </div>
+        </div>
     );
 }
 
